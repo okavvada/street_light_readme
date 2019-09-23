@@ -68,8 +68,15 @@ h1, h2, h3, h4, h5, h6 {
   margin:36px 0 10px;
 }
 
-p, ul, ol, table, dl {
-  margin:0 0 22px;
+ul, ol, table, dl {
+  margin:0 0 2px;
+  font-size: 15px;
+}
+
+p {
+  margin:0 0 10px;
+  font-size: 15px;
+
 }
 
 h1, h2, h3 {
@@ -93,7 +100,7 @@ h2 {
 }
 
 h3 {
-	font-size: 18px;
+	font-size: 20px;
 }
 
 h4, h5, h6 {
@@ -178,23 +185,17 @@ hr {
   margin:0 0 24px;
 }
 
-/* Images */
-
-img {
-  position: relative;
-  margin: 0 auto;
-  padding: 5px;
-  margin-left: 50px;
-  border: 0px solid #ccc;
+.subheader {
+  color:#290159;
+  font-weight:bold;
+  font-size: 16px;
+  font-style: italic;
 }
 
-p img {
-  display: inline;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
-  text-align: center;
-  border: none;
+.number-item {
+  color:#000;
+  font-weight:bold;
+  font-size: 15px;
 }
 
 /* Code blocks */
@@ -216,32 +217,6 @@ pre {
 }
 
 
-/* Tables */
-
-table {
-  width:100%;
-}
-
-table {
-  border: 1px solid #ccc;
-  margin-bottom: 32px;
-  text-align: left;
- }
-
-th {
-  font-family: 'Arvo', Helvetica, Arial, sans-serif;
-	font-size: 18px;
-	font-weight: normal;
-  padding: 10px;
-  background: #232323;
-  color: #FDFEFB;
- }
-
-td {
-  padding: 10px;
-	background: #ccc;
- }
-
 
 /* Wrapper */
 .wrapper {
@@ -258,7 +233,7 @@ td {
 header {
 	background-color:#551A8B;
 	color: #FDFDFB;
-  width:20%;
+  width:22%;
   float:left;
   position:fixed;
 	border: 1px solid #000;
@@ -366,8 +341,8 @@ a.buttons:hover {
 /* Section - for main page content */
 
 section {
-  width: 80%;
-  margin-left:37%;
+  width: 75%;
+  margin-left:40%;
   float:left;
   padding-bottom:50px;
 }
@@ -376,6 +351,8 @@ email {
       color: blue;
       text-decoration:underline;
             }
+
+
 
 /* Footer */
 
@@ -456,6 +433,7 @@ footer {
     position:static;
   }
 }
+
 
 @media print, screen and (max-width: 480px) {
 
