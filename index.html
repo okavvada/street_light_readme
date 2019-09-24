@@ -53,6 +53,7 @@
 <ul>- We create look up tables with road ids and road polygon and sidewalk ids for each. As one road can have multiple sidewalks the lookup table can have multiple sidewalk ids for the same road id</ul>
 <ul>- We join the polygon tables with the road id using the lookup tables and assign an area and a width to each road segment. If there are multiple sidewalks assigned to a road segment, the sum of the width and area are added.</ul>
 
+<span class='map'><iframe src="maps/road_widths.html" height="600" width="1000"></iframe></span>
 
 <h3>
 <c class="anchor" aria-hidden="true"></c>Lighting Infrastructure</h3>
@@ -67,7 +68,6 @@ We then connect the street lights to the road segments by distance to create a l
 <p><span class="number-item">5. Count street lights on road: </span>Then each street light is assigned to a road segment by distance. As mentioned before some street lights on corners might be closer to a different segment. To avoid mismatching only the roads that have the same name as the one mentioned in the street lights table as assessed when looking for the closest segment.
 Finally, for each road segment the lights that were matched to it are counted and added as a separate column in the streets table "stlights_number".</p>
 
-<span class='map'><iframe src="maps/road_widths.html" height="600" width="1000"></iframe></span>
 
 <h3>
 <c class="anchor" aria-hidden="true"></c>Lighting Measurements</h3>
