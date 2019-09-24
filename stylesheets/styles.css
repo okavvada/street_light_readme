@@ -198,6 +198,13 @@ hr {
   font-size: 15px;
 }
 
+.map {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
 /* Code blocks */
 
 code, pre {
