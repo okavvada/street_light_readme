@@ -87,11 +87,11 @@ Finally, for each road segment the lights that were matched to it are counted an
 <p><span class="number-item">3. Estimating power consumption per road segment: </span>The dataset for street lights from the open dataset has 2 relevant fields for actual lamp power PWE using an electronic driver and PWC using a condensator "balast". For each road segments, these two fields were summed for all the lights that were assigned to it and the final power consumption of the segment was added as a field to the road under the column "pwe_pwc". </p>
 
 <p><span class="number-item">4. Identify lamp type: </span>The dataset for street lights given by the client has a lamp description field under MTFLIBELLE. For each description a short code name to describe the lamp type was associated with each street light as:
-<u>Lampe ballon fluorescent, Lampe fluo compact, Tube fluorescent = FLUO</u>
-<u>Lampe sodium basse pression = SBP</u>
-<u>Lampe sodium haute pression substituÃ©e, Lampe sodium haute pression existante, Lampe sodium trÃ¨s haute pression = SHP</u>
-<u>Lampe Cosmopolis, Lampe Ã\xa0 iodures mÃ©talliques = IM</u>
-<u>Diodes Electroluminescentes, Source Panneau Lumineux = LED</u> 
+<li>Lampe ballon fluorescent, Lampe fluo compact, Tube fluorescent = FLUO</li>
+<li>Lampe sodium basse pression = SBP</li>
+<li>Lampe sodium haute pression substituÃ©e, Lampe sodium haute pression existante, Lampe sodium trÃ¨s haute pression = SHP</li>
+<li>Lampe Cosmopolis, Lampe Ã\xa0 iodures mÃ©talliques = IM</li>
+<li>Diodes Electroluminescentes, Source Panneau Lumineux = LED</li>
 
 Also, the lights that were inside a park identified from the PROLIBELLE = DEVE field in the database were assigned the code '_DEVE' in the end of their lamp type</p>
 
@@ -124,7 +124,13 @@ Also, the lights that were inside a park identified from the PROLIBELLE = DEVE f
 <img src="maps/rue_priority.png">
 
 <h3>
-<c class="anchor" aria-hidden="true"></c>Parks and Biodiversity lighting</h3>
+<c class="anchor" aria-hidden="true"></c>Parks and Biodiversity</h3>
+
+
+
+<img src="maps/park_lights.png" height=300px>
+
+<span class='map'><iframe src="maps/shadows.html" height="600" width="1000"></iframe></span>
 
 </div>
 		
