@@ -56,18 +56,12 @@
 <span class='map'><iframe src="maps/road_widths.html" height="600" width="1000"></iframe></span>
 
 <h3>
-<c class="anchor" aria-hidden="true"></c>Lighting Infrastructure</h3>
+<c class="anchor" aria-hidden="true"></c>Lighting Preprocessing</h3>
 
-<span class="subheader">Connecting lights to road segments</span>
 <p><span class="number-item">1. Preprocessing: </span>Fistly, some preprocessing was done to convert the point geometries to WGS 84 and delete some geometries that were not assigned with the correct SRID and could not be projected.
 All relevant tables from the MS access database were then joined into one using the IDs provided and explained in the Metadata.xls file. This data was stored in a new table called "all_mdb_data".</p>
 <p><span class="number-item">2. Filtering: </span>The data was filtered to only include lighting features and this new data was stored in a new table called "street_lights_only" by "MTYLIBELLE" = 'Lampe EP'.</p>
-<p><span class="number-item">3. Spatial join: </span>Then the street light geometries where connected with the open data street light geometries by distance. For optimization reasons only the lights that were in close proximity (within 10 m of each other) were assessed when looking for the closest one. To avoid duplicate lights being assigned to a single point, all street lights were only allowed to have one connection with a different point. The lookup table with the codes for the connection was stored in a new table called "open_mdb_lights_codes".</p>
-<p><span class="number-item">4. Road names: </span>Using the lookup table the street lights were connected to the open data street lights and their properties shared. The joined tables were stored as a new table "open_mdb_lights".
-We then connect the street lights to the road segments by distance to create a lookup table between the road names as present in the street light table (VOILIBELLE) and the road id. Each light is connected to one road and then the road id is assigned the most popular name from all street lights connected to it. That is done to avoid wrong naming streets as some lights on corners are assigned to them but technically belong to a different street.</p>
-<p><span class="number-item">5. Count street lights on road: </span>Then each street light is assigned to a road segment by distance. As mentioned before some street lights on corners might be closer to a different segment. To avoid mismatching only the roads that have the same name as the one mentioned in the street lights table as assessed when looking for the closest segment.
-Finally, for each road segment the lights that were matched to it are counted and added as a separate column in the streets table "stlights_number".</p>
-
+<p><span class="number-item">3. Spatial join: </span>Then the street light geometries where connected with the open data street light geometries by distance. For optimization reasons only the lights that were in close proximity (within 10 m of each other) were assessed when looking for the closest one. To avoid duplicate lights being assigned to a single point, all street lights were only allowed to have one connection with a different point. The lookup table with the codes for the connection was stored in a new table called "open_mdb_lights_codes". Using the lookup table the street lights were connected to the open data street lights and their properties shared. The joined tables were stored as a new table "open_mdb_lights".</p>
 
 <h3>
 <c class="anchor" aria-hidden="true"></c>Lighting Measurements</h3>
@@ -79,9 +73,59 @@ Finally, for each road segment the lights that were matched to it are counted an
 <p><span class="number-item">3. Additional names: </span>We can also add the data from the lookup table that was generated before that includes the road names from the street light data ("roadName_fromlights_rid").</p>
 <p><span class="number-item">4. Join to roads: </span>Finally, we join the analyse table with the road segment geometries using the lookup table that was just generated.</p></p>
 
-<span class='map'><iframe src="maps/street_lights2.html" height="600" width="1000"></iframe></span>
-    </div>
+<h3>
+<c class="anchor" aria-hidden="true"></c>Lighting Infrastructure</h3>
 
+<span class="subheader">Connecting lights to road segments</span>
+<p><span class="number-item">1. Road names: </span>
+The street lights are then connected to the road segments by distance to create a lookup table between the road names as present in the street light table (VOILIBELLE) and the road id. Each light is connected to one road and then the road id is assigned the most popular name from all street lights connected to it. That is done to avoid wrong naming streets as some lights on corners are assigned to them but technically belong to a different street. If a road was connected to lights with different road names associated with them (same number of lights in each group), then the road took the name of one of the groups and the rest of the lights would be unconnected. To enhance the process of connecting lights to roads, the same process was run again using as inputs the street lights and road segments that were left unmatched on the first round. This optimization enabled more lights to be connected to roads, and more roads to be given names. </p>
+<p><span class="number-item">2. Count street lights on road: </span>Then each street light is assigned to a road segment by distance. As mentioned before some street lights on corners might be closer to a different segment. To avoid mismatching only the roads that have the same name as the one mentioned in the street lights table as assessed when looking for the closest segment. 
+Finally, for each road segment the lights that were matched to it are counted and added as a separate column in the streets table "stlights_number".</p>
+
+<span class='map'><iframe src="maps/street_lights2.html" height="600" width="1000"></iframe></span>
+
+<p><span class="number-item">3. Estimating power consumption per road segment: </span>The dataset for street lights from the open dataset has 2 relevant fields for actual lamp power PWE using an electronic driver and PWC using a condensator "balast". For each road segments, these two fields were summed for all the lights that were assigned to it and the final power consumption of the segment was added as a field to the road under the column "pwe_pwc". </p>
+
+<p><span class="number-item">4. Identify lamp type: </span>The dataset for street lights given by the client has a lamp description field under MTFLIBELLE. For each description a short code name to describe the lamp type was associated with each street light as:
+<u>Lampe ballon fluorescent, Lampe fluo compact, Tube fluorescent = FLUO</u>
+<u>Lampe sodium basse pression = SBP</u>
+<u>Lampe sodium haute pression substituÃ©e, Lampe sodium haute pression existante, Lampe sodium trÃ¨s haute pression = SHP</u>
+<u>Lampe Cosmopolis, Lampe Ã\xa0 iodures mÃ©talliques = IM</u>
+<u>Diodes Electroluminescentes, Source Panneau Lumineux = LED</u> 
+
+Also, the lights that were inside a park identified from the PROLIBELLE = DEVE field in the database were assigned the code '_DEVE' in the end of their lamp type</p>
+
+<p><span class="number-item">5. Identify lamp type priority: </span>Based on their lamp type, priorities were defined as:
+<li>FLUO = 1</li>
+<li>SBP = 5</li>
+<li>SHP = 8</li>
+<li>LED = 10</li>
+<li>if inside a park (DEVE) but not LED = 3</li>
+</p>
+
+
+<h3>
+<c class="anchor" aria-hidden="true"></c>Road segment lighting types</h3>
+<p><span class="number-item">1. Primary and Secondary light types for each segment: </span>To identify what the primary light type of each road segment a number of rules were followed.
+<li>If there was only one lamp type listed as 'Luminaire fonctionnel' then that was the primary one. Else,</li>
+<li>the light type with maximum height was set us primary</li>
+<li>If there was only one lamp type listed as 'Luminaire espace pietons' then that was the secondary one. Else,</li>
+<li>if there was only one lamp type with height in between 0.5 and 3 m that one was set as the secondary one. Else,</li>
+<li>the most populous lamp type was set as the secondary one.</li></p>
+
+<p><span class="number-item">2. Energy savings for each segment: </span>For each road segment the energy savings were calculated if the lamp type was converted into an LED. Firstly, the power of the road segment with an LED light was estimated using the LED efficiency of 0.06 W/m2*lux, the road and sidewalk area (estimated before) and the mean existing lighting level listed in the measurement database (Eclairement_moyen_exige). This was divided by the number of street lights per segment to get an average required power. The energy savings are calculated by subtracting the actual power estimated above (pwe_pwc) from the LED power.</p>
+
+<p><span class="number-item">3. Road segment conformity priority: </span>The priorities for each road segment were set as described in the image below.</p>
+
+<img src="maps/troncon_priority.png">
+
+<p><span class="number-item">3. Entire road conformity priority: </span>For the entire road that corresponds to multiple road segments the priorities were set if a certain amount of road segments were fullfilling certain criteria as specified below.</p>
+
+<img src="maps/rue_priority.png">
+
+
+
+</div>
 		
   </body>
 </html>
