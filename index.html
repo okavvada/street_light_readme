@@ -125,12 +125,24 @@ Also, the lights that were inside a park identified from the PROLIBELLE = DEVE f
 
 <h3>
 <c class="anchor" aria-hidden="true"></c>Parks and Biodiversity</h3>
-
-
+<p>This assessment aims to direct to street lights that have an influence on parks.</p>
+<p><span class="number-item">1. Lights inside parks: </span>To identify which street lights fall within the boundaries of parks with enclosures, the `PROLIBELLE` field was used and checked whether `DEVE` was contained in the field attributes. In addition, the field `NRELIBELLE = HORAIRE EP` and  `NRELIBELLE = HORAIRE SQUARE` were used.  
+The parks with enclosures were selected by using the field `presence_cloture = oui` and the lights that intersect with those parks were selected.</p>
+<p><span class="number-item">2. Lights close to parks: </span>To identify which street lights are located close to parks, a buffer of 40 m was included in the park dataset and the street lights that fall into it were selected as having a proximity to the parks. A column was added to the lights table with the id of the park that they were close to `park_ogc_fid`. Their distance to the park was also calculated in meters and added as a separate column `dist_to_park`. </p>
+<p><span class="number-item">3. Building shadows: </span>As an advanced feature of the lights that have a proximity to parks, we wanted to exclude the street lights that are close to parks but a building is intejecting the direct contact between light and park. To achieve this, we connected each light with its closest park with a line that connects the point of the line to the point along the park polygon that is closest to the light. Then we checked whether this line intersects any buildings. If not, the light and park remain connected `park_influence = yes` otherwise `park_influence = no`.</p>
 
 <img src="maps/park_lights.png" height=300px>
 
 <span class='map'><iframe src="maps/shadows.html" height="600" width="1000"></iframe></span>
+
+
+<h3>
+<c class="anchor" aria-hidden="true"></c>Energy consumption</h3>
+<p>This assessment aims to calculate the current and future energy consumption for each road segment.</p>
+<p><span class="number-item">1. Current and future power for each lamp type: </span> For each lamp type a current and future power value was estimated by INEO. These values were connected to the lighting database using the field `MBILIBELLE` and assigned to each light in the database. </p>
+<p><span class="number-item">2. Current and future power for each road segment: </span> The lights were connected to the roads that they belong to by using the lookup table `stlights_on_road` developed previously and for each road segment the power * hours of operation (given in `NRSTOTAL`) was calculated for current and future energy use. </p>
+<p><code>current_power_MWh = sum(mbipw * NRSTOTAL/1000) </code></p>
+<p><code>future_power_MWh = sum(pwled * NRSTOTAL/1000) </code></p>
 
 </div>
 		
