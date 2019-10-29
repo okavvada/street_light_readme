@@ -147,11 +147,12 @@ The parks with enclosures were selected by using the field `presence_cloture = o
 
 <h3>
 <c class="anchor" aria-hidden="true"></c>EV charging</h3>
-<p>This assessment aims to calculate the current and future energy consumption for each road segment.</p>
-<p><span class="number-item">1. Current and future power for each lamp type: </span> For each lamp type a current and future power value was estimated by INEO. These values were connected to the lighting database using the field `MBILIBELLE` and assigned to each light in the database. </p>
-<p><span class="number-item">2. Current and future power for each road segment: </span> The lights were connected to the roads that they belong to by using the lookup table `stlights_on_road` developed previously and for each road segment the power * hours of operation (given in `NRSTOTAL`) was calculated for current and future energy use. </p>
-<p><code>current_power_MWh = sum(mbipw * NRSTOTAL/1000) </code></p>
-<p><code>future_power_MWh = sum(pwled * NRSTOTAL/1000) </code></p>
+<p>This assessment aims to identify the lighting poles that could potentially be candidate locations for EV charging stations. The candidate locations need to be close to a parking spot (no more than 2m away) and have no buildings or other obstacles in between the parking spot and the pole.</p>
+<p><span class="number-item">1. Identify poles: </span> The poles are identified from the lighting dataset by applying the filters `CandÃ©labre` or `MÃ¢t`.  </p>
+<p><span class="number-item">2. Buffer: </span> A buffer zone of 2 m is applied to all parking spots (after they have been projected to a metric projection epsg:31467). The poles that fall within this buffer zone are selected. </p>
+<p><span class="number-item">3. Calculate distance: </span> A distance is calculated from all the poles that fall within the 2 m buffer zone to the closest point of a parking spot. The distance is listed in the `dist_to_parking` field. </p>
+<p><span class="number-item">3. Building interference: </span> As an advanced feature of the poles that have a proximity to parking spots, we wanted to exclude the poles that have a building  intejecting the direct contact between pole and parking. To achieve this, we connected each pole with its closest parking with a line that connects the point of the line to the point along the parking polygon that is closest to the pole. Then we checked whether this line intersects any buildings. If not, the pole and park remain connected and a property is set as `ev_charging = yes` otherwise `ev_charging = no`.</p>
+
 <span class='map'><iframe src="maps/ev_charging.html" height="600" width="1000"></iframe></span>
 
 </div>
