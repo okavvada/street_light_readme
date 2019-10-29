@@ -144,6 +144,16 @@ The parks with enclosures were selected by using the field `presence_cloture = o
 <p><code>current_power_MWh = sum(mbipw * NRSTOTAL/1000) </code></p>
 <p><code>future_power_MWh = sum(pwled * NRSTOTAL/1000) </code></p>
 
+
+<h3>
+<c class="anchor" aria-hidden="true"></c>EV charging</h3>
+<p>This assessment aims to calculate the current and future energy consumption for each road segment.</p>
+<p><span class="number-item">1. Current and future power for each lamp type: </span> For each lamp type a current and future power value was estimated by INEO. These values were connected to the lighting database using the field `MBILIBELLE` and assigned to each light in the database. </p>
+<p><span class="number-item">2. Current and future power for each road segment: </span> The lights were connected to the roads that they belong to by using the lookup table `stlights_on_road` developed previously and for each road segment the power * hours of operation (given in `NRSTOTAL`) was calculated for current and future energy use. </p>
+<p><code>current_power_MWh = sum(mbipw * NRSTOTAL/1000) </code></p>
+<p><code>future_power_MWh = sum(pwled * NRSTOTAL/1000) </code></p>
+<span class='map'><iframe src="maps/ev_charging.html" height="600" width="1000"></iframe></span>
+
 </div>
 		
   </body>
